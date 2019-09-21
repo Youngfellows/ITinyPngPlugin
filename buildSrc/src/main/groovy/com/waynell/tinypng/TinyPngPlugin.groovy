@@ -12,6 +12,7 @@ package com.waynell.tinypng
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 
 public class TinyPngPlugin implements Plugin<Project> {
 
@@ -25,6 +26,12 @@ public class TinyPngPlugin implements Plugin<Project> {
         //执行自定义Task任务
         project.afterEvaluate {
             project.task("tinyPng", type: TinyPngTask)
+            def buildTask = project.tasks.getByName('build')
+            //指定task执行在build task任务之后
+            buildTask.finalizedBy('tinyPng')
+            buildTask.doLast {
+                println 'build finish ...'
+            }
         }
     }
 }
